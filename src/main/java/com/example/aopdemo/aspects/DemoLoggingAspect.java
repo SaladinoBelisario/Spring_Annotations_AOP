@@ -12,6 +12,18 @@ public class DemoLoggingAspect {
     @Pointcut("execution(* com.example.aopdemo.dao.*.*(..))")
     public void forDAOPackage(){}
 
+    // create a pointcut for getter methods
+    @Pointcut("execution(* com.example.aopdemo.dao.*.get*(..))")
+    public void getter(){}
+
+    // create a pointcut for setter methods
+    @Pointcut("execution(* com.example.aopdemo.dao.*.set*(..))")
+    public void setter(){}
+
+    // combined pointcuts to exclude getters and setters
+    @Pointcut("forDAOPackage() && !(getter() || setter())")
+    public void forDAOPackageNotGetterSetter() {}
+
     // here we add the related advices for logging
     // e.g. @Before advice
     // @Before("execution(public void add*())")
@@ -19,7 +31,7 @@ public class DemoLoggingAspect {
     // @Before("execution(public void addAccount())")
     // @Before("execution(public void com.example.aopdemo.dao.AccountDAO.addAccount())")
     // @Before("execution(public void updateAccount())")
-    @Before("forDAOPackage()")
+    @Before("forDAOPackageNotGetterSetter()")
     public void beforeAddAccountAdvice() {
         System.out.println("\n=====>>> Executing @Before advice on method");
     }

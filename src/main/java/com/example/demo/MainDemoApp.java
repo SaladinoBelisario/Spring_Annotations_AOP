@@ -19,6 +19,8 @@ public class MainDemoApp {
 
         // call the business method
         accountDAO.addAccount(new Account("The Account"));
+        accountDAO.getServiceCode();
+        accountDAO.getName();
 
         // call another business method
         membershipDAO.addAccount();
