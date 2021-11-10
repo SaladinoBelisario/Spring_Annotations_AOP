@@ -28,7 +28,7 @@ pipeline {
           environment {
             // Previously defined in the Jenkins "Global Tool Configuration"
             scannerHome = tool 'sonar-scanner'
-            serviceName = 'GS'
+            serviceName = 'test_project'
             SONAR_HOST_URL = 'http://mysonarqube:9000'
             SONAR_LOGIN = 'admin'
             SONAR_PASS =  'sonar'
@@ -37,14 +37,13 @@ pipeline {
             // "sonarqube" is the server configured in "Configure System"
             withSonarQubeEnv('sonarqube') {
               // Execute the SonarQube scanner with desired flags
-              sh "./gradlew sonarqube \
-                    -Dsonar.projectKey=${serviceName} \
-                    -Dsonar.language=java \
-                    -Dsonar.host.url=${env.SONAR_HOST_URL} \
-                    -Dsonar.login=${env.SONAR_LOGIN} \
-                    -Dsonar.password=${env.SONAR_PASS} \
-                    -Dsonar.projectName=${serviceName} \
-                    -Dsonar.projectVersion=${BUILD_NUMBER}"
+              sh "${scannerHome}/bin/sonar-scanner \
+                    -D sonar.login=${env.SONAR_LOGIN} \
+                    -D sonar.password=${env.SONAR_PASS} \
+                    -D sonar.language=java \
+                    -D sonar.projectKey=${env.serviceName} \
+                    -D sonar.exclusions=vendor/**,resources/**,**/*.java \
+                    -D sonar.host.url=${env.SONAR_HOST_URL}"
             }
             timeout(time: 5, unit: 'MINUTES') {
               // In case of SonarQube failure or direct timeout exceed, stop Pipeline
