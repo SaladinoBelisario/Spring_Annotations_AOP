@@ -21,7 +21,7 @@ pipeline {
       stage('Checkout') {
         steps {
             // Get Github repo using Github credentials (previously added to Jenkins credentials)
-            checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SaladinoBelisario/Spring_Annotations_AOP']]])
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/SaladinoBelisario/Spring_Annotations_AOP']]])
         }
       }
       stage('scan') {
