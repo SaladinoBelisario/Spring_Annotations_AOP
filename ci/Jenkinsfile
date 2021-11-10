@@ -45,10 +45,6 @@ pipeline {
                     -D sonar.exclusions=vendor/**,resources/**,**/*.java \
                     -D sonar.host.url=${env.SONAR_HOST_URL}"
             }
-            timeout(time: 5, unit: 'MINUTES') {
-              // In case of SonarQube failure or direct timeout exceed, stop Pipeline
-              waitForQualityGate abortPipeline: qualityGateValidation(waitForQualityGate())
-            }
           }
       }
   }
